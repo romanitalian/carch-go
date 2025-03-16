@@ -1,0 +1,17 @@
+include:
+  - project: devops/ci-templates/full-pipeline
+    ref: $FULL_PIPELINE_TEMPLATE_VERSION
+    file:
+      - paymentgate2-golang-app.yml
+
+variables:
+  GOLANG_VERSION: 1.24.0
+  DOCKERFILE: Dockerfile
+  DOCKERFILE_PATH: $CI_PROJECT_DIR/build
+  HELM_INSTALL_NAME: pg2-$CI_PROJECT_NAME
+  HELM_INSTALL_NAMESPACE: paymentgate2
+  HELM_ADDITIONAL_ARGS:   "--set-file secret.data=$APP_SECRET_CONFIG --set image.tag=$IMAGE_TAG"
+
+deploy dev:
+    rules:
+    - when: never
